@@ -11,11 +11,6 @@ import (
 	"github.com/fatih/color"
 )
 
-type Event struct {
-	EventType string
-	Stamp     time.Time
-}
-
 type DoThing struct {
 	Items  []element.Item
 	Done   []element.Item
