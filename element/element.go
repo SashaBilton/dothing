@@ -73,7 +73,7 @@ func printItem(item Item) {
 
 	}
 
-	if is(item.Events, "Done") {
+	if Is(item.Events, "Done") {
 		p = green
 	}
 	if item.Group != "" {
