@@ -17,6 +17,7 @@ type DoThing struct {
 	LastID int
 }
 
+//CLI entrance
 func main() {
 
 	//createSaveTestData()
