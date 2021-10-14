@@ -71,6 +71,8 @@ func main() {
 		fmt.Println(dothing)
 	case "csv":
 		element.PrintAllToCSV(dothing.Items)
+		element.PrintAllToCSV(dothing.Done)
+
 	case "due":
 		index, _ := strconv.Atoi(body)
 		if element.CheckIndex(dothing.Items, index) {
