@@ -245,7 +245,7 @@ func PrintStats(dothing *DoThing) {
 
 func PurgeDone(dothing *DoThing) {
 	for i, item := range dothing.Items {
-		if element.HasEvent(item, "Done") {
+		if item.HasEvent("Done") {
 			Done(dothing, i)
 		}
 	}

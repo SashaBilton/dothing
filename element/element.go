@@ -35,7 +35,7 @@ func PrintItems(items []Item, group string) {
 	for i, item := range items {
 		if item.Note != "" && (group == "" || item.Group == group) {
 			fmt.Printf("%d:\t", i)
-			printItem(item)
+			item.printItem()
 		}
 	}
 }
@@ -43,75 +43,14 @@ func PrintItems(items []Item, group string) {
 func PrintAllItems(items []Item) {
 	for i, item := range items {
 		fmt.Printf("%d:\t", i)
-		printItem(item)
+		item.printItem()
 	}
 }
 
 func PrintAllToCSV(items []Item) {
 	for _, item := range items {
-		PrintCSV(item)
+		item.PrintCSV()
 	}
-}
-
-func printItem(item Item) {
-	green := color.New(color.FgGreen)
-	white := color.New(color.FgWhite)
-	yellow := color.New(color.FgYellow)
-	red := color.New(color.FgRed)
-
-	p := white
-	if item.IsDue {
-		//
-		t := time.Now()
-		warning := item.Due.Add(-time.Hour * 48)
-		//fmt.Printf("t %v d %v w %v c %v", t, item.Due, warning, critical)
-		if t.After(warning) && t.Before(item.Due) {
-			p = yellow
-		} else if t.After(item.Due) {
-			p = red
-		}
-
-	}
-
-	if Is(item.Events, "Done") {
-		p = green
-	}
-	if item.Group != "" {
-		p.Printf("%s [%s] - ", item.Note, item.Group)
-	} else {
-		p.Printf("%s - ", item.Note)
-	}
-	if item.IsDue {
-		p.Printf(" due %02d/%02d/%04d ", item.Due.Day(), item.Due.Month(), item.Due.Year())
-	}
-
-	for i, event := range item.Events {
-		if i > 0 {
-			p.Printf(", %s", event.EventType)
-		} else {
-			p.Printf("%s", event.EventType)
-		}
-
-		p.Printf(" %02d/%02d/%d", event.Stamp.Day(), event.Stamp.Month(), event.Stamp.Year())
-
-	}
-	fmt.Println()
-
-}
-
-func PrintCSV(item Item) {
-
-	fmt.Printf("%d, %s, %s ", item.ID, item.Note, item.Group)
-	for _, event := range item.Events {
-
-		fmt.Printf(", %s", event.EventType)
-
-		t := event.Stamp
-		fmt.Printf(", %02d/%02d/%d", t.Day(), t.Month(), t.Year())
-
-	}
-	fmt.Println()
-
 }
 
 func FindByID(items []Item, ID int) (int, error) {
@@ -215,7 +154,7 @@ func Earliest(items []Item) time.Time {
 	return earliest
 }
 
-func HasEvent(item Item, EventName string) bool {
+func (item Item) HasEvent(EventName string) bool {
 	for _, event := range item.Events {
 		if event.EventType == EventName {
 			return true
@@ -231,4 +170,65 @@ func Is(events []Event, ofType string) bool {
 		}
 	}
 	return false
+}
+
+func (item Item) printItem() {
+	green := color.New(color.FgGreen)
+	white := color.New(color.FgWhite)
+	yellow := color.New(color.FgYellow)
+	red := color.New(color.FgRed)
+
+	p := white
+	if item.IsDue {
+		//
+		t := time.Now()
+		warning := item.Due.Add(-time.Hour * 48)
+		//fmt.Printf("t %v d %v w %v c %v", t, item.Due, warning, critical)
+		if t.After(warning) && t.Before(item.Due) {
+			p = yellow
+		} else if t.After(item.Due) {
+			p = red
+		}
+
+	}
+
+	if Is(item.Events, "Done") {
+		p = green
+	}
+	if item.Group != "" {
+		p.Printf("%s [%s] - ", item.Note, item.Group)
+	} else {
+		p.Printf("%s - ", item.Note)
+	}
+	if item.IsDue {
+		p.Printf(" due %02d/%02d/%04d ", item.Due.Day(), item.Due.Month(), item.Due.Year())
+	}
+
+	for i, event := range item.Events {
+		if i > 0 {
+			p.Printf(", %s", event.EventType)
+		} else {
+			p.Printf("%s", event.EventType)
+		}
+
+		p.Printf(" %02d/%02d/%d", event.Stamp.Day(), event.Stamp.Month(), event.Stamp.Year())
+
+	}
+	fmt.Println()
+
+}
+
+func (item Item) PrintCSV() {
+
+	fmt.Printf("%d, %s, %s ", item.ID, item.Note, item.Group)
+	for _, event := range item.Events {
+
+		fmt.Printf(", %s", event.EventType)
+
+		t := event.Stamp
+		fmt.Printf(", %02d/%02d/%d", t.Day(), t.Month(), t.Year())
+
+	}
+	fmt.Println()
+
 }
