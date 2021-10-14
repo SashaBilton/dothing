@@ -11,6 +11,7 @@ import (
 	"github.com/fatih/color"
 )
 
+//should this be here or in it's own file?
 type DoThing struct {
 	Items  []element.Item
 	Done   []element.Item
