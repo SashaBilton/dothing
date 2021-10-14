@@ -224,7 +224,7 @@ func HasEvent(item Item, EventName string) bool {
 	return false
 }
 
-func is(events []Event, ofType string) bool {
+func Is(events []Event, ofType string) bool {
 	for _, event := range events {
 		if event.EventType == ofType {
 			return true
