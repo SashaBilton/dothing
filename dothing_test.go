@@ -34,7 +34,7 @@ func TestDone(t *testing.T) {
 
 	AddItem(dothing, "Testing 1..2..3", "Test")
 
-	Done(dothing, 0)
+	dothing.ItemDone(0)
 
 	if !element.Is(dothing.Done[0].Events, "Done") {
 		t.Error("Expected Testing 1..2..3 to be done")
