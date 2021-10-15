@@ -1,3 +1,4 @@
+//elements contains all the Item level strcutures needed for DoThing
 package element
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/fatih/color"
 )
 
+//An Item holds all the information for a single task, and a collection events tied to that task
 type Item struct {
 	ID     int
 	Note   string
@@ -17,11 +19,13 @@ type Item struct {
 	IsDue  bool
 }
 
+//An Event is a named and date stamped process that has been applied to an Item
 type Event struct {
 	EventType string
 	Stamp     time.Time
 }
 
+//CheckIndex ensures that the given index is within the range of a collection (Array) of Items
 func CheckIndex(items []Item, index int) bool {
 	if index < 0 || index > len(items)-1 {
 		color.Red("Item %d not found\n", index)
@@ -31,6 +35,7 @@ func CheckIndex(items []Item, index int) bool {
 	}
 }
 
+//Prints a collection of Items, and if given a non-empty group, will filter on that group
 func PrintItems(items []Item, group string) {
 	for i, item := range items {
 		if item.Note != "" && (group == "" || item.Group == group) {
@@ -40,19 +45,14 @@ func PrintItems(items []Item, group string) {
 	}
 }
 
-func PrintAllItems(items []Item) {
-	for i, item := range items {
-		fmt.Printf("%d:\t", i)
-		item.printItem()
-	}
-}
-
+//Output a collection of Items in comma seperated value format
 func PrintAllToCSV(items []Item) {
 	for _, item := range items {
 		item.PrintCSV()
 	}
 }
 
+//Find an item in a collection of Items by ID
 func FindByID(items []Item, ID int) (int, error) {
 	for i, item := range items {
 		if item.ID == ID {
@@ -63,6 +63,7 @@ func FindByID(items []Item, ID int) (int, error) {
 
 }
 
+//Sets an Item given by index to being due and adds the due date to it based a string.
 func SetDue(items []Item, index int, when string) {
 
 	item := &items[index]
@@ -77,11 +78,13 @@ func SetDue(items []Item, index int, when string) {
 
 }
 
+//Set the group an Item, given by index, to a named group. Use blank to remove from a group
 func SetGroup(items []Item, index int, group string) {
 	item := &items[index]
 	item.Group = group
 }
 
+//Add a named Event to an Item, given by index and datestamp that event
 func AddEvent(items []Item, index int, eventType string) {
 
 	event := new(Event)
@@ -94,6 +97,7 @@ func AddEvent(items []Item, index int, eventType string) {
 
 }
 
+//Outputs the details of a given
 func Detail(items []Item, index int) {
 
 	item := items[index]
@@ -112,6 +116,7 @@ func Detail(items []Item, index int) {
 
 }
 
+//Insert an item into a given index position
 func Insert(a []Item, index int, value Item) []Item {
 	if len(a) == index { // nil or empty slice or after last element
 		return append(a, value)
@@ -121,20 +126,21 @@ func Insert(a []Item, index int, value Item) []Item {
 	return a
 }
 
-func Remove(slice []Item, s int) []Item {
-	return append(slice[:s], slice[s+1:]...)
+//Remove an item at a given index in a collection
+func Remove(items []Item, index int) []Item {
+	return append(items[:index], items[index+1:]...)
 }
 
+//SetPrioirity inserts an exsisting indexed item into a new position. Setting a priority greater the length of the collection pushes it to last place.
 func SetPriority(items []Item, index int, priority int) {
-
+	if priority < 0 {
+		priority = 0
+	}
 	if priority > len(items) {
 		priority = len(items)
 	}
 	itemCopy := items[index]
-	item := &items[index]
-	fmt.Printf("Remove %d %s\n", item.ID, item.Note)
 	items = Remove(items, index)
-	fmt.Printf("Insert %d %s\n", item.ID, item.Note)
 	if priority > len(items) {
 		items = append(items, itemCopy)
 	} else {
@@ -142,6 +148,8 @@ func SetPriority(items []Item, index int, priority int) {
 	}
 
 }
+
+//Finds the Time of the earliest event in a collection
 func Earliest(items []Item) time.Time {
 	earliest := time.Now()
 	for _, item := range items {
@@ -154,15 +162,7 @@ func Earliest(items []Item) time.Time {
 	return earliest
 }
 
-func (item Item) HasEvent(EventName string) bool {
-	for _, event := range item.Events {
-		if event.EventType == EventName {
-			return true
-		}
-	}
-	return false
-}
-
+//Returns true if an event type exists in a collection of events
 func Is(events []Event, ofType string) bool {
 	for _, event := range events {
 		if event.EventType == ofType {
@@ -172,6 +172,17 @@ func Is(events []Event, ofType string) bool {
 	return false
 }
 
+//Returns true if the item has an event with the given event name
+func (item Item) HasEvent(EventName string) bool {
+	for _, event := range item.Events {
+		if event.EventType == EventName {
+			return true
+		}
+	}
+	return false
+}
+
+//Output a colour coded version of the given item
 func (item Item) printItem() {
 	green := color.New(color.FgGreen)
 	white := color.New(color.FgWhite)
@@ -218,6 +229,7 @@ func (item Item) printItem() {
 
 }
 
+//Output a CSV version of the item
 func (item Item) PrintCSV() {
 
 	fmt.Printf("%d, %s, %s ", item.ID, item.Note, item.Group)

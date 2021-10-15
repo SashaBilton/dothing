@@ -54,9 +54,9 @@ func main() {
 	case "list":
 		element.PrintItems(dothing.Items, body)
 	case "listall":
-		element.PrintAllItems(dothing.Items)
+		element.PrintItems(dothing.Items, "")
 		color.Cyan("Done items\n")
-		element.PrintAllItems(dothing.Done)
+		element.PrintItems(dothing.Done, "")
 	case "done":
 		index, _ := strconv.Atoi(body)
 		if element.CheckIndex(dothing.Items, index) {
