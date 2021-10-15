@@ -11,7 +11,7 @@ import (
 	"github.com/fatih/color"
 )
 
-//should this be here or in it's own file?
+//A DoThing houses a whole collection of items, both done and todo as well as storing the last ID used
 type DoThing struct {
 	Items  []element.Item
 	Done   []element.Item
@@ -60,7 +60,7 @@ func main() {
 	case "done":
 		index, _ := strconv.Atoi(body)
 		if element.CheckIndex(dothing.Items, index) {
-			Done(dothing, index)
+			dothing.ItemDone(index)
 			element.PrintItems(dothing.Items, "")
 			save = true
 		}
@@ -116,7 +116,7 @@ func main() {
 	case "undone":
 		index, _ := strconv.Atoi(body)
 		if element.CheckIndex(dothing.Done, index) {
-			Undone(dothing, index)
+			dothing.Undone(index)
 			element.PrintItems(dothing.Items, "")
 
 			save = true
@@ -129,6 +129,7 @@ func main() {
 	fmt.Println()
 }
 
+//Saves a dothing collection as a serial gob file, and also creates a historical entry in the hist directory
 func (dothing *DoThing) Save() {
 
 	file, err := os.Create("dothing.gob")
@@ -154,6 +155,7 @@ func (dothing *DoThing) Save() {
 
 }
 
+//Loads the local dothing.gob serial collection
 func (dothing *DoThing) Load() {
 	file, err := os.Open("dothing.gob")
 	if err != nil {
@@ -165,7 +167,8 @@ func (dothing *DoThing) Load() {
 	_ = decoder.Decode(dothing)
 }
 
-func Done(dothing *DoThing, index int) {
+//ItemDone move the Item at the given index from the active Items list to the Done list
+func (dothing *DoThing) ItemDone(index int) {
 
 	done := new(element.Event)
 	done.Stamp = time.Now()
@@ -183,7 +186,8 @@ func Done(dothing *DoThing, index int) {
 
 }
 
-func Undone(dothing *DoThing, index int) {
+//Undone moves a Item back from Done to the active Items collection
+func (dothing *DoThing) Undone(index int) {
 	done := new(element.Event)
 	done.Stamp = time.Now()
 	done.EventType = "Undone"
@@ -197,6 +201,7 @@ func Undone(dothing *DoThing, index int) {
 
 }
 
+//Adds
 func AddItem(dothing *DoThing, note string, group string) {
 
 	item := new(element.Item)
@@ -216,6 +221,7 @@ func AddItem(dothing *DoThing, note string, group string) {
 
 }
 
+//Outputs statistics on active and Done items.
 func PrintStats(dothing *DoThing) {
 
 	items := len(dothing.Items)
@@ -241,6 +247,7 @@ func PrintStats(dothing *DoThing) {
 	color.HiGreen("Done per day: %.2f Days to complete items: %.0f", donePerDay, daysToDoItems)
 }
 
+//Creates a new empty DoThing object
 func createNewDothing() *DoThing {
 	dothing := new(DoThing)
 	dothing.LastID = 0
