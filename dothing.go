@@ -121,13 +121,7 @@ func main() {
 
 			save = true
 		}
-
-	case "PURGE_DONE":
-		PurgeDone(dothing)
-		save = true
-
 	}
-
 	if save {
 		dothing.Save()
 		fmt.Println("dothing updated.")
@@ -245,15 +239,6 @@ func PrintStats(dothing *DoThing) {
 	donePerDay := doneDays / float64(done)
 	daysToDoItems := float64(items) / donePerDay
 	color.HiGreen("Done per day: %.2f Days to complete items: %.0f", donePerDay, daysToDoItems)
-}
-
-func PurgeDone(dothing *DoThing) {
-	for i, item := range dothing.Items {
-		if item.HasEvent("Done") {
-			Done(dothing, i)
-		}
-	}
-
 }
 
 func createNewDothing() *DoThing {
