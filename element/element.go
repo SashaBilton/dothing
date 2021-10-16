@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/araddon/dateparse"
 	"github.com/fatih/color"
 )
 
@@ -73,9 +74,21 @@ func SetDue(items []Item, index int, when string) {
 		item.Due = time.Date(year, month, day, 0, 0, 0, 0, time.Now().Local().Location()).Add(time.Hour * 24)
 		item.IsDue = true
 		fmt.Printf("%s due date is %02d/%02d/%d\n", items[index].Note, items[index].Due.Day(), items[index].Due.Month(), items[index].Due.Year())
-
+	} else if when == "today" {
+		year, month, day := time.Now().Date()
+		item.Due = time.Date(year, month, day, 0, 0, 0, 0, time.Now().Local().Location())
+		item.IsDue = true
+		fmt.Printf("%s due date is %02d/%02d/%d\n", items[index].Note, items[index].Due.Day(), items[index].Due.Month(), items[index].Due.Year())
+	} else {
+		myDate, err := dateparse.ParseAny(when)
+		if err != nil {
+			fmt.Printf("%s - %s isn't invalid due date", err, when)
+			return
+		}
+		item.Due = myDate
+		item.IsDue = true
+		fmt.Printf("%s due date is %02d/%02d/%d\n", items[index].Note, items[index].Due.Day(), items[index].Due.Month(), items[index].Due.Year())
 	}
-
 }
 
 //Set the group an Item, given by index, to a named group. Use blank to remove from a group
