@@ -230,7 +230,7 @@ func PrintStats(dothing *DoThing) {
 
 	incomplete := 100.0 / float32(total) * float32(done)
 
-	fmt.Printf("To do: %d Done: %d Total : %d Complete: %.00f%% \n", items, done, total, incomplete)
+	fmt.Printf("To do: %d Done: %d Total: %d Complete: %.00f%% \n", items, done, total, incomplete)
 
 	earliestItem := element.Earliest(dothing.Items)
 	earliestDone := element.Earliest(dothing.Done)
@@ -241,10 +241,10 @@ func PrintStats(dothing *DoThing) {
 	itemDays := now.Sub(earliestItem).Hours() / 24
 	doneDays := now.Sub(earliestDone).Hours() / 24
 
-	fmt.Printf("Days since first Item: %.00f Days since first Done %.00f\n", itemDays, doneDays)
+	fmt.Printf("Oldest item: %.00f days.  Oldest Done item: %.00f days\n", itemDays, doneDays)
 	donePerDay := doneDays / float64(done)
 	daysToDoItems := float64(items) / donePerDay
-	color.HiGreen("Done per day: %.2f Days to complete items: %.0f", donePerDay, daysToDoItems)
+	color.HiGreen("Done per day: %.2f Days to complete all active items: %.0f", donePerDay, daysToDoItems)
 }
 
 //Creates a new empty DoThing object
