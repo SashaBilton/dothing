@@ -185,6 +185,15 @@ func Is(events []Event, ofType string) bool {
 	return false
 }
 
+//Output any overdue items
+func Nag(items []Item) {
+	for i, item := range items {
+		if item.IsDue && item.Due.Before(time.Now()) {
+			color.Red("\n%d: %s is overdue.", i, item.Note)
+		}
+	}
+}
+
 //Returns true if the item has an event with the given event name
 func (item Item) HasEvent(EventName string) bool {
 	for _, event := range item.Events {

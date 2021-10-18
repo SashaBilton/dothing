@@ -16,6 +16,7 @@ type DoThing struct {
 	Items  []element.Item
 	Done   []element.Item
 	LastID int
+	Nag    bool
 }
 
 //CLI entrance
@@ -108,7 +109,6 @@ func main() {
 			priority, _ := strconv.Atoi(mod)
 			element.SetPriority(dothing.Items, index, priority)
 			element.PrintItems(dothing.Items, "")
-
 			save = true
 		}
 	case "stats":
@@ -118,13 +118,24 @@ func main() {
 		if element.CheckIndex(dothing.Done, index) {
 			dothing.Undone(index)
 			element.PrintItems(dothing.Items, "")
-
 			save = true
 		}
+	case "nag":
+		dothing.Nag = true
+		save = true
+	case "unnag":
+		dothing.Nag = false
+		save = true
 	}
+
+	if dothing.Nag {
+		element.Nag(dothing.Items)
+
+	}
+
 	if save {
 		dothing.Save()
-		fmt.Println("dothing updated.")
+		fmt.Println("\ndothing updated.")
 	}
 	fmt.Println()
 }
