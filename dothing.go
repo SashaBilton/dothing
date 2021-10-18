@@ -256,6 +256,11 @@ func PrintStats(dothing *DoThing) {
 	donePerDay := doneDays / float64(done)
 	daysToDoItems := float64(items) / donePerDay
 	color.HiGreen("Done per day: %.2f Days to complete all active items: %.0f", donePerDay, daysToDoItems)
+	cyclehrs := element.AverageCycleTime(dothing.Done)
+	color.HiGreen("Average cycle time of started and finished items: %d hrs or %.1f days", cyclehrs, float32(cyclehrs)/24)
+	leadhrs := element.AverageLeadTime(dothing.Done)
+	color.HiGreen("Average lead time of created and finished items: %d hrs or %.1f days", leadhrs, float32(leadhrs)/24)
+
 }
 
 //Creates a new empty DoThing object

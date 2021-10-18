@@ -194,6 +194,62 @@ func Nag(items []Item) {
 	}
 }
 
+//Calculate the average Lead time - started to done - of a collection of items
+func AverageCycleTime(items []Item) int {
+
+	total := 0
+	count := 0
+	for _, item := range items {
+		var start, done time.Time
+		var hasStart, hasEnd bool = false, false
+		for _, event := range item.Events {
+			if event.EventType == "Started" {
+				start = event.Stamp
+				hasStart = true
+			}
+			if event.EventType == "Done" {
+				done = event.Stamp
+				hasEnd = true
+			}
+		}
+		if hasStart && hasEnd {
+			total += int(done.Sub(start).Hours())
+			count++
+		}
+
+	}
+
+	return total / count
+}
+
+//Calculate the average Lead time - created to done - of a collection of items
+func AverageLeadTime(items []Item) int {
+
+	total := 0
+	count := 0
+	for _, item := range items {
+		var start, done time.Time
+		var hasStart, hasEnd bool = false, false
+		for _, event := range item.Events {
+			if event.EventType == "Created" {
+				start = event.Stamp
+				hasStart = true
+			}
+			if event.EventType == "Done" {
+				done = event.Stamp
+				hasEnd = true
+			}
+		}
+		if hasStart && hasEnd {
+			total += int(done.Sub(start).Hours())
+			count++
+		}
+
+	}
+
+	return total / count
+}
+
 //Returns true if the item has an event with the given event name
 func (item Item) HasEvent(EventName string) bool {
 	for _, event := range item.Events {

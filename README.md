@@ -6,7 +6,7 @@ go get github.com/SashaBilton/dothing
 
 Run uncompiled as go run dothing.go {command}
 
-Commands are
+Commands are<br>
 NEW - creates a brand new dothing task list - do this first<br>
 add "your task details" {optional group} - adds a task <br>
 list {optional group} - lists all currently active tasks<br>
@@ -19,7 +19,7 @@ event {index} {event name} - Adds an event to a task<br>
 detail {index} - Displays full details of an active task<br>
 csv - Displays all tasks, active and done, in a comma seperated format<br>
 raw - Displays a raw JSON-like output<br>
-stats - Displays stats on how many items are done or active, etc,.<br>
+stats - Displays stats on how many items are done or active, with lead and cycle time,.<br>
 nag - turns on the display of overdue items on every command.<br>
 unnag - turns off the display of overdue items on every command.<br> 
 
