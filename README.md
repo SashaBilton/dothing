@@ -21,5 +21,5 @@ csv - Displays all tasks, active and done, in a comma seperated format<br>
 raw - Displays a raw JSON-like output<br>
 stats - Displays stats on how many items are done or active, etc,.<br>
 nag - turns on the display of overdue items on every command.<br>
-unnage - turns off the display of overdue items on every command.<br> 
+unnag - turns off the display of overdue items on every command.<br> 
 
