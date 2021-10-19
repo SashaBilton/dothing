@@ -1,4 +1,3 @@
-//elements contains all the Item level strcutures needed for DoThing
 package element
 
 import (
@@ -18,12 +17,6 @@ type Item struct {
 	Group  string
 	Due    time.Time
 	IsDue  bool
-}
-
-//An Event is a named and date stamped process that has been applied to an Item
-type Event struct {
-	EventType string
-	Stamp     time.Time
 }
 
 //CheckIndex ensures that the given index is within the range of a collection (Array) of Items
@@ -173,16 +166,6 @@ func Earliest(items []Item) time.Time {
 		}
 	}
 	return earliest
-}
-
-//Returns true if an event type exists in a collection of events
-func Is(events []Event, ofType string) bool {
-	for _, event := range events {
-		if event.EventType == ofType {
-			return true
-		}
-	}
-	return false
 }
 
 //Output any overdue items
