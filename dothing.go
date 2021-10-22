@@ -228,7 +228,7 @@ func AddItem(dothing *DoThing, note string, group string) {
 	dothing.Items = append(dothing.Items, *item)
 
 	addItem := dothing.Items[len(dothing.Items)-1]
-	fmt.Printf("%d: %s added to %s\n", addItem.ID, addItem.Note, addItem.Group)
+	fmt.Printf("%d: %s added to %s\n", len(dothing.Items)-1, addItem.Note, addItem.Group)
 
 }
 
