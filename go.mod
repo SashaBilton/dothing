@@ -1,4 +1,4 @@
-module dothing
+module github.com/SashaBilton/dothing
 
 go 1.17
 
